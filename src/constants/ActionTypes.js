@@ -1,0 +1,3 @@
+export const EDIT_CHECKED1 = 'EDIT_CHECKED1'
+export const EDIT_CHECKED2 = 'EDIT_CHECKED2'
+
