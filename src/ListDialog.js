@@ -1,8 +1,5 @@
-import Popup from 'reactjs-popup'
-//import React from 'react';
 import { connect } from 'react-redux'
 import IconButton from '@material-ui/core/IconButton';
-import CommentIcon from '@material-ui/icons/Comment';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -11,14 +8,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
 import AddDialog from './addDialog.js'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
 import {deleteData} from './actionCreators'
 import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -36,19 +29,23 @@ const mapDispatchToProps = {
 const showText = (data) => {
   return (
     <TextField
+      required = {data.required}
       label={data.name}
       margin="normal"
-      variant="outlined" />
-  )
+      variant="outlined" 
+      type = {data.input_type}
+      />)
 }
 
 const showCheckbox = (data) => {
   return (
     <FormLabel>
-      <b>{data.name}</b> {data.multiple === true ? "(multivalinta)" : ""}
+      <b>{data.name}</b>
+       {data.required === true ? " *" : ""} 
+       {data.multiple === true ? "(multivalinta)" : ""}
       <FormGroup row>
-        {data.choises.map((a, i) => (
-          <FormControlLabel
+        {data.choises.map((a,i) => (
+          <FormControlLabel key={i}
             control={
               <Checkbox
                 checked={false}
@@ -64,7 +61,6 @@ const showCheckbox = (data) => {
 const ListDialog = (props) => {
 
   const [click, setClick] = useState(false);
-  const [check, setCheck] = useState(false);
 
   const handleClickOpen = () => {
     setClick(true)
@@ -72,16 +68,6 @@ const ListDialog = (props) => {
 
   const handleClose = () => {
     setClick(false)
-  };
-
-  const handleChange = () => {
-    setCheck(!check)
-  };
-
-  const handleAddText = (button) => () => {
-    const temp = {button: 0, clicked: true}
-    button === 1 ? temp.button = 1 : temp.button = 2
-    //setClick2(temp)
   };
 
   const handleDelete = (item_index, list_index) => () => {
@@ -102,7 +88,7 @@ const ListDialog = (props) => {
           <DialogTitle id="dialog-title">{props.state2[props.index].name}</DialogTitle>
           <DialogContent>
           <DialogContentText id="dialog-description">
-             <b>LISÄÄ:</b>
+             LISÄÄ:
           </DialogContentText>      
             <AddDialog index={props.index}></AddDialog>   
             <List>

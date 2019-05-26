@@ -41,3 +41,16 @@ export const deleteList2 = id => ({
     type: 'DELETE_LIST2',
     id
 })
+export const checkList1 = (list1_index) => ({
+    type: 'CHECK_LIST1',
+    list1_index
+})
+export const checkList2 = (list2_index) => ({
+    type: 'CHECK_LIST2',
+    list2_index
+})
+export const saveData = (data, list2_index) => ({
+    type: 'SAVE_DATA',
+    data,
+    list2_index
+})

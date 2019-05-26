@@ -1,31 +1,17 @@
-//import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
-import CommentIcon from '@material-ui/icons/Comment';
-import Icon from '@material-ui/core/Icon';
-//import Paper from '@material-ui/core/Paper';
-//import { Table } from '@material-ui/core';
 import './index.css';
-import { Column, Row } from 'simple-flexbox';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
-//import Popup from "reactjs-popup";
-import axios from 'axios'
-import { resolveCname } from 'dns';
-import {createStore} from 'redux'
 import { connect } from 'react-redux'
 import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
 import React, { useState } from 'react';
 import {addList2, deleteList2} from './actionCreators'
-import Paper from '@material-ui/core/Paper';
+
 
 
 const mapStateToProps = (state) => ({
