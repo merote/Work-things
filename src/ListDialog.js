@@ -27,6 +27,7 @@ const mapDispatchToProps = {
 }
 
 const showText = (data) => {
+  
   return (
     <TextField
       required = {data.required}

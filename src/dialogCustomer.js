@@ -94,6 +94,8 @@ const answer_init = (data) => {
 
 const DialogCustomer = (props) => {
 
+  console.log(props)
+  
   const init = answer_init(props.state2[props.list_index].data)
 
   const [click, setClick] = useState(false);
@@ -145,7 +147,8 @@ const DialogCustomer = (props) => {
 
     return (
       <div>
-        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+        <Button variant="outlined" color="primary" onClick={handleClickOpen} 
+          disabled = {props.list2_checked[props.list_index] !== 1}> 
           Täytä tiedot
         </Button>
         <Dialog

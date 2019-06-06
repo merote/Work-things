@@ -22,7 +22,7 @@ const FrontPage = () => {
             
         >
             <Grid item>
-                <img src={image} width="1800" height="800" alt="etusivu" />
+                <img src={image} width="1500" height="600" alt="etusivu" />
             </Grid>
         </Grid>
         

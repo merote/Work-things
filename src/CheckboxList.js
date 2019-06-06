@@ -36,7 +36,7 @@ const CheckboxList = (props) => {
 
 const check2_init = Array(props.list2.length).fill(0)
 const [check1, setCheck1] = useState(); 
-const [check2, setCheck2] = useState([]);   
+const [check2, setCheck2] = useState([props.list2.map(() => 0)]);   
 
 const handleChecked1 = index => () => { 
   if (index === 0) {
@@ -75,8 +75,6 @@ const saveDatabase = () => {
 
   console.log(props.customer_data)
   
-
-  console.log(props.list2[1].name,)
 //Creating JSON
   const temp = props.customer_data.list2.map(a => (
        {palvelun_tyyppi: props.list2[a].name,
@@ -89,6 +87,8 @@ const saveDatabase = () => {
       
   console.log(order)
 
+  axios.post('api/tilaukset', order);
+//api/tilaukset
 }
 
 return (
@@ -127,7 +127,7 @@ return (
           <ListItemText primary={value.name} />
             
             <ListItemSecondaryAction>
-              <DialogCustomer list_index = {index}></DialogCustomer >
+              <DialogCustomer list_index = {index} list2_checked = {check2}></DialogCustomer >
             </ListItemSecondaryAction>                     
             </ListItem>                                 
            ))}         

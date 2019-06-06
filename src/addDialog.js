@@ -29,8 +29,8 @@ const AddDialog = (props) => {
   const [opened2, setOpen2] = useState(false); //Add new checkbox popup
   const [input, setInput] = useState(""); //Textfield input
   const [inputValue, setInputValue] = useState(""); // Price/piece if number checked in Textfield part
-  const [textfields, setTextfield] = useState([]); //Checkbox choices names
-  const [check, SetCheck] = useState(false) // multichoise for checkboxes
+  const [textfields, setTextfield] = useState([]); //Checkbox choices names and prices
+  const [check, setCheck] = useState(false) // multichoise for checkboxes
   const [check2, setCheck2] = useState([false, false, false]) //date, time or number type for textfield
   const [check3, setCheck3] = useState(false)   //required field (text/checkbox)
 
@@ -39,10 +39,10 @@ const AddDialog = (props) => {
     setInput("")
     button === 1 ? setOpen1(false) : setOpen2(false)
     setTextfield([])
-    SetCheck(false)
+    setCheck(false)
     setCheck2([false,false,false])
     setCheck3(false)
-    setInputValue("")
+    setInputValue(0)
   }
 
   const handleAdd = (button) => () => {
@@ -83,7 +83,7 @@ const AddDialog = (props) => {
   }
 
   const handleAddOption = () => {
-    const textfields_new = [...textfields, { name: "", price: "" }]
+    const textfields_new = [...textfields, { name: "", price: 0 }]
     setTextfield(textfields_new)
 
   }
@@ -184,7 +184,7 @@ const AddDialog = (props) => {
         control={
           <Checkbox
             checked={check}
-            onChange={() => SetCheck(!check)}
+            onChange={() => setCheck(!check)}
           />
         }
         label="Useamman ruudun valinta"

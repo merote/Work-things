@@ -13,7 +13,7 @@ const getList2 = async () => {
 
 export const Lists_Load = () => {
 
-    const data1 = getList1()
+    const data1 = getList1().catch(e => console.log(e.message))
     const tasot_redux = []
     data1.then(data => {
         data.forEach((a,i) => {
@@ -37,7 +37,7 @@ export const Lists_Load = () => {
         })
     });*/
 
-    const data2 = getList2()
+    const data2 = getList2().catch(e => console.log(e.message))
     const palvelut_redux = []
     const data_redux = []
     data2.then(data => {
@@ -47,7 +47,42 @@ export const Lists_Load = () => {
                 id: a.id,
                 data: []
             }
-            , data_redux[i] = []
+            , data_redux[i] = a.kentat.forEach((kentta, j) => {
+                if(kentta.values.length === 0) {
+                    if(kentta.data_type === 'integer') {
+                        
+                        palvelut_redux[i].data.push({
+                            id: j,
+                            input_type: 'number',
+                            name: kentta.column_name,
+                            required: kentta.required,
+                            type: "text",
+                            price: kentta.price //parseFloat(kentta.price)
+                        });    
+                    } else {
+                        palvelut_redux[i].data.push({
+                            id: j,
+                            input_type: kentta.data_type,
+                            name: kentta.column_name,
+                            required: kentta.required,
+                            type: "text"
+                        });    
+                    }
+                        
+                } else {
+                    palvelut_redux[i].data.push({
+                        id: j,
+                        input_type: kentta.data_type,
+                        name: kentta.column_name,
+                        required: kentta.required,
+                        multiple: kentta.multiple,
+                        type: "checkbox",
+                        choises: kentta.values
+                    });    
+                         
+                }
+                
+            })
         ))
     });
 
@@ -63,46 +98,7 @@ export const Lists_Load = () => {
 
 export const Lists_Load_test = () => {
 
-
-
-//    const promise = axios.get('/api/palvelutasot')    
-//    const test = promise.then(response => {
-    
-/*        tasot.forEach((a,i) => {
-            tasot_redux[i] = {
-                name: a.kuvaus,
-                id: a.id,
-                list2_id: a.palvelut.length > 0 ? a.palvelut.map(b => b.id-1) : []
-            }
-        })   
-*/
-
-
-    
-
-    
-    //console.log(test)
-/*
-        console.log('TEST4')
-        const promise = axios.get('/api/palvelut')    
-        promise.then(response => {
-            const palvelut = response.data
-            console.log(palvelut)
-            const palvelut_redux = []
-            palvelut.forEach((a,i) => {
-                palvelut_redux[i] = {
-                    name: a.palvelunNimi,
-                    id: i,
-                    data: []
-                }
-            })        
-        return palvelut_redux
-    })       
- */   
- //   console.log(tasot_redux)
-  
-    //return (list_number === 1 ? tasot_redux : palvelut_redux)
-    
+ 
     const tasot = [
         {   id : 1,    
             "kuvaus": "Räätälöity",
@@ -162,11 +158,11 @@ export const Lists_Load_test = () => {
             data: []
         }
     })        
-    const choices1= [{name: "eka", price: 1},{name: "toka", price: 2},{name: "kolmas", price: 3}]
-    const choices2= [{name: "Test", price: ""},{name: "Test2", price: ""}]
+    const choices1= [{name: "eka", price: 1},{name: "toka", price: 0},{name: "kolmas", price: 3}]
+    const choices2= [{name: "Test", price: 5},{name: "Test2", price: 6}]
     
     const data1 = [{type: "text", name: "Anna nimi", input_type: "text", required: false, id: 0},
-    {type: "checkbox", name: "Valitse sopiva", multiple: false, choises: choices1, required: false, id: 1}]
+    {type: "checkbox", name: "Valitse sopiva", multiple: true, choises: choices1, required: false, id: 1}]
 
     const data2 = [{type: "checkbox", name: "Valinnat", multiple: false, choises: choices2, required: false, id:0}]
 
