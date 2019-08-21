@@ -1,4 +1,5 @@
-//import React from 'react';
+//Admin puolen editointi palvelutaso ja palvelu listoja varten. Lisäykset ja poistot
+
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -16,13 +17,14 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import React, { useState } from 'react';
 
 
-//const list2_init = [0,0,0,0,0];
 
+
+//Reduxin storen mappaukset propseihin
 const mapStateToProps = (state) => ({
   state: state.adminReducer,
   state2: state.adminReducer2,
 });
-  
+//Reduxin storen mappaukset propseihin 
 const mapDispatchToProps = {
   editList1,
   addList1,
@@ -34,11 +36,11 @@ const mapDispatchToProps = {
 
 const AdminList = (props) => {
  
-
-  const [input1, setList1] = useState("");
-  const [check1, setCheck1] = useState();
-  const [input2, setList2] = useState("");
-  const [check2, setCheck2] = useState([]);
+  //React hooksit 
+  const [input1, setList1] = useState("");  //Palvelutason nimisyöte
+  const [check1, setCheck1] = useState();   //palvelutason checkbox valinta
+  const [input2, setList2] = useState(""); //Palvelun nimisyöte
+  const [check2, setCheck2] = useState([]); //palvelujen checkbox valinnat
 
 
   const handleSavecombo = () => {
@@ -49,6 +51,7 @@ const AdminList = (props) => {
     props.editList1(check1, check2_id )
   }
   
+  //Kantaan tallennus palveluyhdistelmästä. Muokataan oikeanlainen JSON + axios
   const handleSaveChanges = () => () => {
     
     const uusiPalveluyhdistelma = {
@@ -76,9 +79,7 @@ const AdminList = (props) => {
         palvelut.push(data[0].name)
         console.log(data)
       })
-      /*p.list2_id.forEach(id => {
-        palvelut.push(props.state2[id].name)
-      })*/
+
       const palvelutaso = {
         kuvaus: p.name,
         palvelut: palvelut  
@@ -90,6 +91,7 @@ const AdminList = (props) => {
     axios.post('api/uusiPalveluyhdistelma', uusiPalveluyhdistelma);
   }
   
+  //Lisätään teksti reduxin storeen ja tyhjennetään vastaava hooks
   const handleAdd1 = (text) => () => {
     setList1("")
     props.addList1(text)
@@ -99,6 +101,7 @@ const AdminList = (props) => {
     setList1(event.target.value)
   }
 
+  //Varmistetaan että palvelutaso/palvelu kombinaatiot säilyvät vaikka listoja editoitaisiin
   const handleCheck1 = (index) => () => {
     setCheck1(index)
     const check_temp = [...check2].splice(0, check2.length-1, 0) 
@@ -110,6 +113,7 @@ const AdminList = (props) => {
     setCheck2(check_temp)
   }
 
+  //Poistetaan palvelutaso listalta
   const handleDelete1 = (index) => () => {
     setCheck1()
     setCheck2([])
@@ -119,12 +123,14 @@ const AdminList = (props) => {
 
 /////////////////LIST 2
 
-  const handleCheck2 = (index) => () => {
+//Palveljen checkbox valinnat
+const handleCheck2 = (index) => () => {
     const check_new = [...check2]
     check2[index] === 1 ? check_new[index] = 0: check_new[index] = 1
     setCheck2(check_new)
   }
 
+  //Lisätään teksti reduxin storeen ja tyhjennetään vastaava hooks
   const handleAdd2 = (text) => () => {
     setList2("")
     props.addList2(text)
@@ -134,6 +140,7 @@ const AdminList = (props) => {
     setList2(event.target.value)
   }
 
+  //Deletoidaan palvelu listasta. Päivitetään redux ja hooks
   const handleDelete2 = (index) => () => {
     const check2_new = [...check2]
     check2_new.splice(index,1)
@@ -186,7 +193,7 @@ const AdminList = (props) => {
         </Grid>
         <Grid item xs={4}>
 
-
+          
           <List>
             <ListItem role={undefined} dense divider >
               <TextField

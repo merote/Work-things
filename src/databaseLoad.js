@@ -1,5 +1,8 @@
+//Kantahaut ja datamuokkaukset. Myös erillinen testausfunktio kun kanta ei käytössä
+
 import axios from 'axios'
 
+//asynkronien kantahaku palvelutasoihin liittyen
 const getList1 = async () => {
     const response = await axios.get('/api/palvelutasot')
     return response.data
@@ -10,10 +13,10 @@ const getList2 = async () => {
     return response.data
 }  
 
-
+//Kantahaut ja datan muokkaukset sopivaksi reduxia varten
 export const Lists_Load = () => {
 
-    const data1 = getList1().catch(e => console.log(e.message))
+    const data1 = getList1()
     const tasot_redux = []
     data1.then(data => {
         data.forEach((a,i) => {
@@ -25,39 +28,31 @@ export const Lists_Load = () => {
         })
     })
 
-/*    const data2 = getList2()
-    const palvelut_redux = []
-    data2.then(data => {
-        data.forEach((a,i) => {
-            palvelut_redux[i] = {
-                name: a.kuvaus,
-                id: a.id,
-                data: []
-            }
-        })
-    });*/
 
-    const data2 = getList2().catch(e => console.log(e.message))
+
+    const data2 = getList2()
     const palvelut_redux = []
     const data_redux = []
     data2.then(data => {
-        data.forEach((a, i) => (
+        data.forEach((a, i) => {
             palvelut_redux[i] = {
                 name: a.kuvaus,
                 id: a.id,
                 data: []
             }
-            , data_redux[i] = a.kentat.forEach((kentta, j) => {
+            
+            data_redux.push([]);			
+            
+            a.kentat.forEach((kentta, j) => {
                 if(kentta.values.length === 0) {
                     if(kentta.data_type === 'integer') {
-                        
                         palvelut_redux[i].data.push({
                             id: j,
                             input_type: 'number',
                             name: kentta.column_name,
                             required: kentta.required,
                             type: "text",
-                            price: kentta.price //parseFloat(kentta.price)
+                            price: kentta.price
                         });    
                     } else {
                         palvelut_redux[i].data.push({
@@ -82,8 +77,8 @@ export const Lists_Load = () => {
                          
                 }
                 
-            })
-        ))
+            });
+        });
     });
 
     console.log(palvelut_redux)
@@ -96,6 +91,7 @@ export const Lists_Load = () => {
     return data
 }
 
+//Json lajittelu esimerkki datalla +kun kantahaku ei käytössä. Parsitaan myös reduxia varten
 export const Lists_Load_test = () => {
 
  

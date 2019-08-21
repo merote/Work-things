@@ -1,3 +1,5 @@
+//Asiakkaan valinnat palvelutason ja palveluiden suhteen
+
 import React from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -13,19 +15,14 @@ import { useState } from 'react';
 import Button from '@material-ui/core/Button';
 
 
-/*const MainService = ["Mini", "Keski", "Laaja", "Räätälöity"]
-const Service = ["siivous", "tiskaus", "imurointi", "syöttäminen", "strippaaminen"]
-const Service_lists = [[0,0,1,0,0],[1,0,1,0,1],[1,1,1,1,1]]
-const checked2_init = [0,0,0,0,0]
-const mixed_index = MainService.length-1
-*/
-
+//Reduxin storen mappaukset propseihin
 const mapStateToProps = (state) => ({
   list1: state.adminReducer,
   list2: state.adminReducer2,
   customer_data: state.customerReducer
 });
 
+//Reduxin storen mappaukset propseihin
 const mapDispatchToProps = {
   checkList1,
   checkList2
@@ -34,10 +31,12 @@ const mapDispatchToProps = {
 
 const CheckboxList = (props) => {
 
-const check2_init = Array(props.list2.length).fill(0)
-const [check1, setCheck1] = useState(); 
-const [check2, setCheck2] = useState([props.list2.map(() => 0)]);   
+const check2_init = Array(props.list2.length).fill(0) //Alustetaan hooksit palveluiden määrän mukaan
 
+const [check1, setCheck1] = useState(); //Valittu palvelutaso
+const [check2, setCheck2] = useState([props.list2.map(() => 0)]);  //Valitut palvelut 
+
+//Palvelutason valinnan mukaan päivitetään valitut palvelut eli check2 hooks
 const handleChecked1 = index => () => { 
   if (index === 0) {
     setCheck1(index)
@@ -55,12 +54,14 @@ const handleChecked1 = index => () => {
    }
 }
 
+//Palveluiden valinnat
 const handleChecked2 = index => () => {
     const newChecked = [...check2];
     newChecked[index] === 1 ? newChecked[index] = 0 : newChecked[index] = 1
     setCheck2(newChecked)
 }
 
+//Päivitetään redux hooksin valinnoilla
 const handleSave = () => {
 
   const check2_temp = check2.map((a,i) => a === 1 ? i : -1)
@@ -70,6 +71,7 @@ const handleSave = () => {
 
 }
 
+//Asikkaan valintojen tallennus kantaan
 const saveDatabase = () => {
   const order = {asiakas_id: 1, asiakkaan_nimi: "Asiakas1", tilatut_palvelut: []} 
 
@@ -88,7 +90,6 @@ const saveDatabase = () => {
   console.log(order)
 
   axios.post('api/tilaukset', order);
-//api/tilaukset
 }
 
 return (

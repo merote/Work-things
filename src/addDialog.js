@@ -1,3 +1,5 @@
+//Lisää teksti tai checkbox valintoja listalle admin roolissa.
+
 import { connect } from 'react-redux'
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -13,11 +15,12 @@ import ListItem from '@material-ui/core/ListItem';
 import List from '@material-ui/core/List';
 
 
-
+//Reduxin storen mappaukset propseihin
 const mapStateToProps = (state) => ({
    state2: state.adminReducer2,
 });
 
+//Reduxin storen mappaukset propseihin
 const mapDispatchToProps = {
   addData
 }
@@ -34,7 +37,7 @@ const AddDialog = (props) => {
   const [check2, setCheck2] = useState([false, false, false]) //date, time or number type for textfield
   const [check3, setCheck3] = useState(false)   //required field (text/checkbox)
 
-
+  //Nollataan hooksit kun suljetaan pop-up ikkuna 
   const handleClose = (button) => () => {
     setInput("")
     button === 1 ? setOpen1(false) : setOpen2(false)
@@ -45,15 +48,18 @@ const AddDialog = (props) => {
     setInputValue(0)
   }
 
+  //Valitaan avataanko teksti vai checkbox lisäys ikkuna
   const handleAdd = (button) => () => {
     button === 1 ? setOpen1(true) : setOpen2(true)
   }
 
+ //Joko  teksti vai checkbox tallennus
   const handleSave = (button) => () => {
     button === 1 ? saveText(button) : saveCheckbox(button)
     handleClose(button)();
   }
 
+  //Tallennetaan lisätty teksti-valinta reduxiin. Ensin muokataan oikeaan muotoon
   const saveText = () => {
     const input_temp = check2[0] === true ? "number"
                       :check2[1] === true ? "date"
@@ -62,6 +68,7 @@ const AddDialog = (props) => {
     props.addData(data_temp, props.index)
   }
 
+   //Tallennetaan lisätty checkbox-valinta reduxiin. Ensin muokataan oikeaan muotoon
   const saveCheckbox = () => {
     const data_temp = { type: "checkbox", name: input, multiple: check,
                        choises: textfields, required: check3}
@@ -76,18 +83,21 @@ const AddDialog = (props) => {
     setInputValue(event.target.value)
   }
   
+  //Lisätään checkbox valinnan hinta tai nimi target parametrin mukaan
   const handleChangeAdd = (value, index, target) => {
     const textfield_temp = [...textfields]
     target === 1 ? textfield_temp[index].name = value : textfield_temp[index].price = value
     setTextfield(textfield_temp)
   }
 
+  //Lisätään uusi vaihtoehto/hinta listalle alustettuna
   const handleAddOption = () => {
     const textfields_new = [...textfields, { name: "", price: 0 }]
     setTextfield(textfields_new)
 
   }
 
+  //Poistetaan listan viimeinen vaihtoehto/hinta
   const handleRemoveOption = () => {
     const textfields_new = [...textfields].slice(0, -1)
     setTextfield(textfields_new)
@@ -121,7 +131,7 @@ const AddDialog = (props) => {
               label ="Hinta €/kpl"
               margin ="normal"
               variant="outlined"
-              value = {inputValue}
+              value = {inputValue} 
               type="number"
               onChange={handleInputValue}            
             /> : ""}

@@ -1,3 +1,5 @@
+//Yksittäisen palvelun Täytä tiedot lista ja sen editointi.
+
 import { connect } from 'react-redux'
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
@@ -18,10 +20,12 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import DeleteIcon from '@material-ui/icons/Delete';
 
+//Reduxin storen mappaukset propseihin
 const mapStateToProps = (state) => ({
    state2: state.adminReducer2,
 });
 
+//Reduxin storen mappaukset propseihin
 const mapDispatchToProps = {
   deleteData
 }
@@ -61,7 +65,7 @@ const showCheckbox = (data) => {
 
 const ListDialog = (props) => {
 
-  const [click, setClick] = useState(false);
+  const [click, setClick] = useState(false);  // Palvelun täytä tiedot popup-ikkunan on/off toiminto
 
   const handleClickOpen = () => {
     setClick(true)
@@ -71,6 +75,7 @@ const ListDialog = (props) => {
     setClick(false)
   };
 
+  //Poistetaan listan kysymys(item_index) ja päivitetään reduxin store
   const handleDelete = (item_index, list_index) => () => {
     const dialog_id = props.state2[list_index].data[item_index].id
     props.deleteData(dialog_id, list_index)

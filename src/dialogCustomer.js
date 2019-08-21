@@ -1,3 +1,5 @@
+//Asiakkaan täyttämät palveluiden tiedot, niiden käsittely ja tallenus
+
 import { connect } from 'react-redux'
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -14,18 +16,18 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 
-
+//Reduxin storen mappaukset propseihin
 const mapStateToProps = (state) => ({
    state2: state.adminReducer2,
 });
 
+//Reduxin storen mappaukset propseihin
 const mapDispatchToProps = {
   saveData
 }
 
+//Asikkaan tekstikenttä syötteen käsittely 
 const showText = (data, index, answers, setAnswers) => {
-  
-  //const [input, setInput] = useState([])
   
   const handleChange = (event) => {
     const temp = [...answers]
@@ -45,8 +47,10 @@ const showText = (data, index, answers, setAnswers) => {
       />)
 }
 
+//Asiakkaan checkbox valintojen käsittely 
 const showCheckbox = (data, index, answers, setAnswers) => {
   
+  //Checkbox valintojen käsittely kun vain yhden kohdan voi valita
   const handleSingle = (choise_index) => () => {
     const temp = [...answers]
     const temp_row = answers[index].map(a => false)
@@ -55,6 +59,7 @@ const showCheckbox = (data, index, answers, setAnswers) => {
     setAnswers(temp)
   }
 
+  //Checkbox valintojen käsittely kun useamman kohdan voi valita
   const handleMultiple = (choise_index) => () => {
     const temp = [...answers]
     temp[index][choise_index] = !(temp[index][choise_index])
@@ -81,6 +86,7 @@ const showCheckbox = (data, index, answers, setAnswers) => {
   )
 }
 
+//Hooksin (answers) vastauksia varten alustusfunktio 
 const answer_init = (data) => {
   const init = []
   data.forEach((a,i) => {
@@ -96,30 +102,30 @@ const DialogCustomer = (props) => {
 
   console.log(props)
   
-  const init = answer_init(props.state2[props.list_index].data)
+  const init = answer_init(props.state2[props.list_index].data) 
 
-  const [click, setClick] = useState(false);
-  const [answers, setAnswers]= useState(init)
+  const [click, setClick] = useState(false); //Täytä tiedot pop-up ikkuna on/off
+  const [answers, setAnswers]= useState(init) //Asiakkaan vastaukset
   //const [check, setCheck] = useState(false);
 
   const handleClickOpen = () => {
     setClick(true)
   };
 
+  //Ikkunan sulkeminen ilman tallennusta ja syötteiden nollaus
   const handleCancel = () => {
     setAnswers(answer_init(props.state2[props.list_index].data))
     setClick(false)
   }
 
+  //Vastausten tallennus
   const handleSave = () => {
-
-
     const index = props.list_index
     const temp_state = props.state2[index].data
     
-    console.log(props.state2[index].data[0].name)
     const temp = props.state2[index].data.map(() => [])
-    console.log(answers)
+    
+    //Tallenuksen lajittelus sen mukaan onko teksti vai checkbox valinta
     answers.forEach((a,i) => {
       temp[i] = {question: temp_state[i].name,
                 answer: temp_state[i].type === "text"
@@ -139,10 +145,8 @@ const DialogCustomer = (props) => {
                 }
     })
     console.log(temp)
-
-
     setClick(false)
-    props.saveData(temp, index)
+    props.saveData(temp, index) //redux tallennus
   }
 
     return (
